@@ -19,6 +19,7 @@ char[] lowercase = {'a', 'b', 'c', 'd', 'e', 'f',
   's', 't', 'u', 'v', 'w', 'x', 
   'y', 'z'};
 String guess = "";
+int state = 0;
 //------------------------
 void setup() {  
   background(50);
@@ -59,12 +60,13 @@ void keyPressed() {
       guess = guess.substring(0, guess.length()-1);
     }
   } else {
-    if (keyCheck(key)) {
+    if (keyCheck(key) && state == 0) {
       char uppercase = Character.toUpperCase(key);
       guess += uppercase;
       //x += width/7;
-      if(guess.length() > 5){
-        guess += "";
+      if(guess.length() >= 5){
+        
+        state = 1;
       }
     }
   }
