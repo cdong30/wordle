@@ -234,3 +234,23 @@ void mousePressed() {
       counter = 0;
   }
 }
+
+/* //testing out removing string?
+String guessWord = "moose";
+String randomWord = "mouse";
+
+void setup() {
+  for (int i = 0; i < guessWord.length(); i++) {
+    if(guessWord.charAt(i) != randomWord.charAt(i)){
+      println("test");
+    }
+    else{
+      guessWord = guessWord.substring(i, guessWord.length());
+      randomWord = randomWord.substring(i, randomWord.length());
+      println(guessWord.length());
+      println(randomWord.length());
+      println(guessWord + "\n" + randomWord + "\n");
+    }
+    }
+}
+*/
