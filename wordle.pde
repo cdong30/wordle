@@ -12,6 +12,7 @@ better wordle
  - check if the guessWord is a word from allWords
  - invalid word cover up
  - Changing boxes to green, yellow, grey
+ - Restart Game
  */
 
 boxes[][] b = new boxes[6][5];
@@ -20,7 +21,9 @@ int y;
 int row;
 int col;
 int side = 60;
-int store;
+int state = 0;
+int counter = 0;
+color storeColor = color(255);
 //------------------------
 char[] lowercase = {
   'a', 'b', 'c', 'd', 'e', 'f', 
@@ -29,15 +32,10 @@ char[] lowercase = {
   's', 't', 'u', 'v', 'w', 'x', 
   'y', 'z'};
 String guess = "";
-int state = 0;
-int counter = 0;
 String invalidWord;
-
 String[] allWords;
 String[] sensible;
 String randomWord;
-
-color storeColor = color(255);
 
 IntList charCounter;
 //------------------------
@@ -62,9 +60,11 @@ void setup() {
       x += width/7;
     }
   }
-  randomWord = sensible[int(random(sensible.length))];
+  randomWord = "mouse";
+  //randomWord = sensible[int(random(sensible.length))];
   randomWord = randomWord.toUpperCase();
   println(randomWord);
+  println("hint for debugging: try MOOSE");
 }
 //------------------------
 void draw() {
@@ -108,8 +108,8 @@ void keyPressed() {
         b[row][i].co = storeColor;
         b[row][i].display();
         //println("green");
-      } else if (randomWord.indexOf(guess.charAt(i)) > -1) { //defunct
-        
+      } else if (randomWord.indexOf(guess.charAt(i)) > -1) { //defunct, make new one
+
         storeColor = color(255, 255, 0);
         b[row][i].co = storeColor;
         b[row][i].display();
@@ -132,16 +132,20 @@ void keyPressed() {
       row -= 1;
       counter -= 1;
     }
-    if (correctCheck(guess) == true) {
-      winning();
-    }
+    
     if (counter == 6 && correctCheck(guess) == false) {
       losing();
+    }
+    
+    if (correctCheck(guess) == true) {
+      winning();
+      state = 4;
+    } else {
+      state = 0;
     }
 
     guess = "";
     row += 1;
-    state = 0;
     storeColor = color(255);
   }
 }
@@ -179,17 +183,25 @@ void invalid() {
   textAlign(CENTER);
   text(invalidWord, width/2, 580);
 }
-
+//------------------------
 void winning() {
   fill(0);
-  rect(225, 250, 150, 150);
+  rect(225, 250, 150, 125);
   fill(255);
   textSize(20);
   textAlign(CENTER);
   text("WINNER!", width/2, height/2);
-  text("# of Tries:" + counter, width/2, height/2 + 50);
-}
+  text("# of Tries:" + counter, width/2, height/2 + 20);
 
+  fill(255);
+  stroke(250, 108, 150);
+  strokeWeight(4);
+  rect(240, 330, 120, 30);
+  textSize(15);
+  fill(0);
+  text("Retry", width/2, height/2 + 50);
+}
+//------------------------
 void losing() {
   background(40);
   textSize(20);
@@ -201,4 +213,24 @@ void losing() {
 void fillback() {
   fill(50);
   rect(200, 550, 200, 50);
+}
+//------------------------
+void mousePressed() {
+  if ( mouseX > 240 && mouseX < 360 && mouseY > 330 && mouseY < 360) {
+    background(50);
+    for (int row = 0; row < 6; row++) {
+      for ( int col = 0; col < 5; col++) {
+        b[row][col] = new boxes(width/6 + width/7 * col, 60 + row * 85, 60, ' ', 255);
+        b[row][col].display();
+      }
+    }
+      randomWord = sensible[int(random(sensible.length))];
+      randomWord = randomWord.toUpperCase();
+      println(randomWord);
+      row = 0;
+      col = 0;
+      guess = "";
+      state = 0;
+      counter = 0;
+  }
 }
