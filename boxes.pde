@@ -3,6 +3,7 @@ class boxes{
   int y;
   int side;
   char c;
+  color co;
   
   boxes(int nX, int nY, int nSide){
     x = nX;
@@ -10,11 +11,12 @@ class boxes{
     side = nSide;
   }
   
-  boxes(int nX, int nY, int nSide, char nC){
+  boxes(int nX, int nY, int nSide, char nC, color nCo){
     x = nX;
     y = nY;
     side = nSide;
     c = nC;
+    co = nCo;
   }
   
   void squares(){
@@ -24,7 +26,7 @@ class boxes{
   
   void display(){
     noStroke();
-    fill(255);
+    fill(co);
     rect(x, y, side, side);
     fill(0);
     textSize(side);
